@@ -2,8 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { SystemFeeDraft } from "@/types/types";
-import { API_BASE_URL } from "@/lib/config";
-import { updateCacheData } from "@/app/serveractions";
+import { createSystemFee, updateCacheData } from "@/app/serveractions";
 
 const SystemFeeForm = ({
   SystemFee,
@@ -12,7 +11,7 @@ const SystemFeeForm = ({
 }) => {
   const [draftSysteFee, setdraftSysteFee] = useState<SystemFeeDraft>({
     feeName: SystemFee?.feeName || "",
-    value: SystemFee?.value || "",
+    value: SystemFee?.value || NaN,
     applyOn: SystemFee?.applyOn || "",
     type: SystemFee?.type || "",
   });
@@ -30,20 +29,13 @@ const SystemFeeForm = ({
     };
 
     try {
-      const res = await fetch(`${API_BASE_URL}/admin/create-systemfee`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      const isUpdated = data.success;
-      if (!isUpdated) throw new Error("Failed response");
+      const { success } = await createSystemFee(payload);
+      if (!success) return;
 
       setToast({ tone: "success", message: "Fees Added saved!" });
       setdraftSysteFee({
         feeName: "",
-        value: "",
+        value: NaN,
         applyOn: "",
         type: "",
       });
@@ -74,7 +66,10 @@ const SystemFeeForm = ({
           className="rounded-lg border px-3 py-2"
           value={draftSysteFee.value}
           onChange={(e) =>
-            setdraftSysteFee((prev) => ({ ...prev, value: e.target.value }))
+            setdraftSysteFee((prev) => ({
+              ...prev,
+              value: Number(e.target.value),
+            }))
           }
         />
       </label>

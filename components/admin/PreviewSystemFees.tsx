@@ -13,7 +13,7 @@ const emptySystemFee: SystemFeeDraft = {
   feeName: "",
   type: "",
   applyOn: "",
-  value: "",
+  value: NaN,
 };
 
 const SystemPreviewList = ({ systemFees }: Props) => {
@@ -36,7 +36,9 @@ const SystemPreviewList = ({ systemFees }: Props) => {
       <div className="flex items-start justify-between">
         <div>
           <h2 className="text-lg font-semibold">System Fees</h2>
-          <div className="mt-1 text-xs text-slate-600">Total: {systemFees.length}</div>
+          <div className="mt-1 text-xs text-slate-600">
+            Total: {systemFees.length}
+          </div>
         </div>
 
         <button

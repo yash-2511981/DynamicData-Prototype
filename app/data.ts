@@ -40,3 +40,17 @@ export async function getSystemFees() {
   const systemFees = data.systemFees;
   return { systemFees };
 }
+
+export async function getAllAdvertisement() {
+  "use cache";
+
+  cacheTag("advertises");
+
+  const res = await fetch(`${API_BASE_URL}/server/all-advertises`, {
+    next: { revalidate: 86000 },
+  });
+
+  const resData = await res.json();
+  if (resData.success) return { advertises: resData.advertises };
+  else return { advertises: [] };
+}

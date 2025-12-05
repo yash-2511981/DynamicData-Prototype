@@ -1,7 +1,12 @@
 "use server";
 
 import { API_BASE_URL } from "@/lib/config";
-import { CheckoutResponse } from "@/types/types";
+import {
+  Advertisement,
+  CheckoutResponse,
+  ProductDraft,
+  SystemFeeDraft,
+} from "@/types/types";
 import { updateTag } from "next/cache";
 import { AboutData, fallBackData } from "./about/page";
 
@@ -73,5 +78,96 @@ export const getAboutPageData = async (): Promise<{
   } catch (error) {
     console.log(error);
     return { success: false, project: fallBackData };
+  }
+};
+
+type Response = {
+  success: boolean;
+  message?: string;
+};
+
+export const createProductAction = async (
+  payload: ProductDraft
+): Promise<Response> => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/admin/product`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (res.ok) return { success: true };
+    else return { success: false };
+  } catch (error) {
+    console.log(error);
+    return { success: false };
+  }
+};
+
+export const createSystemFee = async (
+  data: SystemFeeDraft
+): Promise<Response> => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/admin/create-systemfee`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) return { success: false };
+
+    return { success: true };
+  } catch (error) {
+    console.log(error);
+    return { success: false };
+  }
+};
+
+export const handleAdvertisementAction = async ({
+  currentData,
+  prevData,
+}: {
+  currentData: Advertisement;
+  prevData?: Advertisement;
+}): Promise<Response> => {
+  const {
+    offerName,
+    brandName,
+    assetLink,
+    assetType,
+    displayDuration,
+    displayType,
+    isActive,
+  } = currentData;
+
+  if (
+    !offerName ||
+    !brandName ||
+    !assetLink ||
+    !assetType ||
+    !displayDuration ||
+    !displayType ||
+    !isActive
+  )
+    return { success: false, message: "Insert Valid Values" };
+  if (prevData) {
+    const isChangesDone =
+      JSON.stringify(currentData) === JSON.stringify(prevData);
+    if (isChangesDone) return { success: true };
+  }
+  try {
+    const res = await fetch(`${API_BASE_URL}/admin/create-advertise`, {
+      method: "POST",
+      body: JSON.stringify(currentData),
+    });
+    if (!res.ok) return { success: false };
+
+    const data = await res.json();
+    if (!data.success) return { success: false };
+
+    return { success: true };
+  } catch (error) {
+    console.log(error);
+    return { success: false };
   }
 };

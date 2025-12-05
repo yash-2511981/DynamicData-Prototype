@@ -30,9 +30,9 @@ export type ProductDraft = {
 export type SystemFeeDraft = {
   id?: number;
   feeName: string;
-  type: number | string;
+  type: string;
   applyOn: string;
-  value: string;
+  value: number;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -49,4 +49,18 @@ export type CheckoutResponse = {
   fees: Fee[];
   totalFees: number;
   totalPayable: number;
+};
+
+export type Advertisement = {
+  id?: number | "";
+  offerName: string | "";
+  brandName: string | "";
+  assetType: "VIDEO" | "IMAGE" | "";
+  displayType: "HOMEPAGE" | "POPUP" | "";
+  assetLink: string | "";
+  visitLink: string | "";
+  isActive: boolean;
+  displayDuration?: number | null;
+  createdAt?: string | "";
+  updatedAt?: string | "";
 };

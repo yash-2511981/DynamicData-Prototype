@@ -2,8 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { ProductDraft } from "@/types/types";
-import { API_BASE_URL } from "@/lib/config";
-import { updateCacheData } from "@/app/serveractions";
+import { createProductAction, updateCacheData } from "@/app/serveractions";
 
 const ProductForm = ({
   productForEdit,
@@ -31,13 +30,8 @@ const ProductForm = ({
     };
 
     try {
-      const res = await fetch(`${API_BASE_URL}/admin/product`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      await res.json();
+      const { success } = await createProductAction(payload);
+      if (!success) return;
       setToast({ tone: "success", message: "Product saved!" });
       setDraftProduct({
         name: "",

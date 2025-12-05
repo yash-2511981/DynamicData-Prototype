@@ -56,6 +56,22 @@ const AdminPage = () => {
               </Link>
             </div>
           </div>
+          {/* Manage Adverti */}
+          <div className="rounded-2xl bg-white p-6 shadow-sm border">
+            <h2 className="text-xl font-semibold">System Fees</h2>
+            <p className="text-slate-600 mt-1">
+              Add, edit, and manage all System Fees.
+            </p>
+
+            <div className="mt-4 flex gap-3">
+              <Link
+                href="/admin/systemFees"
+                className="rounded-full bg-indigo-600 px-4 py-2 text-white text-sm font-medium shadow"
+              >
+                Manage Advertisement
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>
