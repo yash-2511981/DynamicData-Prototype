@@ -38,6 +38,7 @@ const AdvertisementCard = ({
             width={100}
             className="h-full w-full object-cover"
             loading="lazy"
+            unoptimized
           />
         ) : (
           // small muted looped video preview
@@ -83,7 +84,9 @@ const AdvertisementCard = ({
             </Link>
           </div>
 
-          <button onClick={onEdit}>Edit</button>
+          <button type="button" onClick={onEdit}>
+            Edit
+          </button>
         </div>
       </div>
     </article>

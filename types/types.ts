@@ -60,7 +60,17 @@ export type Advertisement = {
   assetLink: string | "";
   visitLink: string | "";
   isActive: boolean;
-  displayDuration?: number | null;
+  displayDuration?: number;
   createdAt?: string | "";
   updatedAt?: string | "";
+};
+
+export type UserAdd = {
+  id: number | "";
+  assetType: "VIDEO" | "IMAGE" | "";
+  displayType: "HOMEPAGE" | "POPUP" | "";
+  assetLink: string | "";
+  visitLink: string | "";
+  isActive: boolean;
+  displayDuration: number;
 };

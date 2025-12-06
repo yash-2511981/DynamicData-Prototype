@@ -71,6 +71,7 @@ export const getAboutPageData = async (): Promise<{
     );
     if (res.ok) {
       const data = await res.json();
+      if (data.project === null) data.project = fallBackData;
       return { success: true, project: data.project };
     } else {
       throw new Error();
@@ -158,13 +159,14 @@ export const handleAdvertisementAction = async ({
   try {
     const res = await fetch(`${API_BASE_URL}/admin/create-advertise`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(currentData),
     });
     if (!res.ok) return { success: false };
 
     const data = await res.json();
     if (!data.success) return { success: false };
-
+    updateCacheData("advertises");
     return { success: true };
   } catch (error) {
     console.log(error);

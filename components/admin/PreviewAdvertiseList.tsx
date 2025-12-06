@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import AdvertisementCard from "./AdvertiseMentCard";
 import { Advertisement } from "@/types/types";
@@ -20,7 +21,7 @@ const PreviewAdvertiseList = ({
 
   const openEditForm = (advertise: Advertisement) => {
     setEditingAdvertise(advertise);
-    setOpenModel(false);
+    setOpenModel(true);
   };
 
   return (
@@ -36,7 +37,7 @@ const PreviewAdvertiseList = ({
           onClick={openCreateForm}
           className="rounded-full bg-indigo-600 px-4 py-2 text-white text-sm font-medium shadow"
         >
-          + Create Product
+          + Create Advertise
         </button>
       </div>
 
