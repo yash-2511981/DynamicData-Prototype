@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/lib/config";
+import { UserAdd } from "@/types/types";
 import { cacheTag } from "next/cache";
 
 export async function getProductsData() {
@@ -46,11 +47,38 @@ export async function getAllAdvertisement() {
 
   cacheTag("advertises");
 
-  const res = await fetch(`${API_BASE_URL}/server/all-advertises`, {
-    next: { revalidate: 86000 },
+  const res = await fetch(`${API_BASE_URL}/admin/all-advertises`, {
+    next: { revalidate: 30 },
   });
 
   const resData = await res.json();
+  console.log(resData);
   if (resData.success) return { advertises: resData.advertises };
   else return { advertises: [] };
+}
+
+type Response = {
+  success: boolean;
+  homePageAds: UserAdd[];
+  popupAds: UserAdd[];
+};
+
+export async function getUserDisplayAdds(): Promise<Response> {
+  "use cache";
+
+  cacheTag("advertises");
+
+  const res = await fetch(`${API_BASE_URL}/user/get-display-ads`, {
+    next: { revalidate: 60 },
+  });
+
+  const data = await res.json();
+  console.log(data);
+  if (!data.success) return { success: false, homePageAds: [], popupAds: [] };
+
+  return {
+    success: true,
+    homePageAds: data.HomePageAds,
+    popupAds: data.PopupAds,
+  };
 }
